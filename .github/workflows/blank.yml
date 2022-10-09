@@ -39,40 +39,40 @@ jobs:
           git config --global user.name "Andre Tai"
           git config -l
       # Fetch all remote branches, checkout to target branch if it exists, and create it if not
-      - name: Check-out '$BRANCH' branch if exists, else create it
+      - name: Check-out '${{ env.BRANCH }}' branch if exists, else create it
         run: |
-          cd $REPO
+          cd ${{ env.REPO }}
           git fetch --all
           REMOTE=$(git branch -r)
-          if [[ $REMOTE == *"$BRANCH"* ]]; then
+          if [[ $REMOTE == *"${{ env.BRANCH }}"* ]]; then
             echo "'$BRANCH' branch exists on remote"
-            git checkout $BRANCH;
+            git checkout ${{ env.BRANCH }};
           else
-            echo "'$BRANCH' branch doesn't exist on remote"
-            git checkout -b $BRANCH;
+            echo "'${{ env.BRANCH }}' branch doesn't exist on remote"
+            git checkout -b ${{ env.BRANCH }};
           fi
       # Create target file if it doesn't exist and push to target branch
       - name: Check if file exists, create if not
         run: |
-          cd $REPO
-          if test -f "$FILE"; then
-            echo "$FILE exists";
+          cd ${{ env.REPO }}
+          if test -f "${{ env.FILE }}"; then
+            echo "${{ env.FILE }} exists";
           else
-            touch $FILE;
-            echo "# this is a test file" > $FILE;
-            echo "	this is line number 2" >> $FILE;
-            echo "line number 3 is this line" >> $FILE;
-            echo "	# how many lines do we have?" >> $FILE;
-            echo "" >> $FILE;
-            echo "$FILE created";
-            git add $FILE;
+            touch ${{ env.FILE }};
+            echo "# this is a test file" > ${{ env.FILE }};
+            echo "	this is line number 2" >> ${{ env.FILE }};
+            echo "line number 3 is this line" >> ${{ env.FILE }};
+            echo "	# how many lines do we have?" >> ${{ env.FILE }};
+            echo "" >> ${{ env.FILE }};
+            echo "${{ env.FILE }} created";
+            git add ${{ env.FILE }};
             git commit -m "Create $FILE";
-            git push --set-upstream origin $BRANCH;
+            git push --set-upstream origin ${{ env.BRANCH }};
           fi
       # Change target file (e.g. commenting or uncommenting lines) and push to target branch
       - name: Comment/uncomment lines
         run: |
-          cd $REPO
+          cd ${{ env.REPO }}
           IDX=1
           while read -r line; do 
             if [[ $line =~ ^#.* ]]; then
@@ -85,9 +85,9 @@ jobs:
           if [ -z "$CHANGES" ]; then
             echo "No changes to be commited";
           else
-            git add $FILE;
-            git commit -m "Update $FILE";
-            git push --set-upstream origin $BRANCH;
+            git add ${{ env.FILE }};
+            git commit -m "Update ${{ env.FILE }}";
+            git push --set-upstream origin ${{ env.BRANCH }};
           fi
       # After commits were pushed, create pull request and merge it
       - name: Create and merge pull request
@@ -106,7 +106,7 @@ jobs:
             curl \
             -X PUT \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $PAT" \
+            -H "Authorization: Bearer ${{ env.PAT }}" \
             https://api.github.com/repos/${{ env.ORG }}/${{ env.REPO }}/pulls/$PR/merge\
             | tac | tac | python -c 'import sys, json; print(json.load(sys.stdin)["message"])'
           )
