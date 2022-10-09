@@ -80,7 +80,7 @@ jobs:
             echo "$(( IDX++ ))";
           done < $FILE
           CHANGES=$(git status --porcelain)
-          if [ -z "${$CHANGES}" ]; then
+          if [ -z "$CHANGES" ]; then
             echo "No changes to be commited";
           else
             git add $FILE;
