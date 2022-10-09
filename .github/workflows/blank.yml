@@ -39,8 +39,10 @@ jobs:
           echo "current branch: $(git branch --show-current)"
           REMOTE=$(git branch -r)
           if [[ $REMOTE == *"dev"* ]]; then
+            echo "'dev' branch exists on remote"
             git checkout dev;
           else
+            echo "'dev' branch doesn't exist on remote"
             git checkout -b dev;
           fi
       - name: Check if file exists, create if not
@@ -62,7 +64,6 @@ jobs:
             echo "$FILE created";
             git add $FILE;
             git commit -m "Create $FILE";
-            git push --set-upstream origin dev;
           fi
       - name: Comment/uncomment lines
         run: |
@@ -80,5 +81,5 @@ jobs:
           done < $FILE
           git add $FILE
           git commit -m "Update $FILE"
-          git push --set-upstream origin dev
-          
+      - name: Push changes (if any)
+        run: git push --set-upstream origin dev
