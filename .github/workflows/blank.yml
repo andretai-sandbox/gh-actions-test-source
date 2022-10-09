@@ -83,9 +83,10 @@ jobs:
           if [ -z "${$CHANGES}" ]; then
             echo "No changes to be commited";
           else
-            git add $FILE
-            git commit -m "Update $FILE"
-            git push --set-upstream origin dev
+            git add $FILE;
+            git commit -m "Update $FILE";
+            git push --set-upstream origin dev;
+          fi
       - name: Create pull request
         env: 
           PAT: ${{ secrets.PAT }}
