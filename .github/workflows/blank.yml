@@ -57,7 +57,7 @@ jobs:
           cd ${{ env.REPO }}
           if test -f "${{ env.FILE }}"; then
             echo "${{ env.FILE }} exists";
-            PR_REQUIRED=False >> $GITHUB_ENV;
+            echo "PR_REQUIRED=False" >> $GITHUB_ENV;
           else
             touch ${{ env.FILE }};
             echo "# this is a test file" > ${{ env.FILE }};
@@ -98,6 +98,7 @@ jobs:
       - name: Create and merge pull request
         if: ${{ env.PR_REQUIRED }} == "True"
         run: |
+          echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
           PR=$(\
             curl \
             -X POST \
