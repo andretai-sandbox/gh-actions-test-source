@@ -29,9 +29,9 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          repository: $ORG/$REPO
-          path: './$REPO'
-          token: $PAT
+          repository: ${{ env.ORG }}/${{ env.REPO }}
+          path: './${{ env.REPO }}'
+          token: ${{ env.PAT }}
       # Set global config such as user's email and name
       - name: Set up git config
         run: |
