@@ -26,24 +26,17 @@ jobs:
       - uses: actions/checkout@v3
         with:
           repository: andretai-sandbox/gh-actions-test-target
-#           ref: refs/heads/main
           path: './gh-actions-test-target'
           token: ${{ secrets.PAT }}
-      - name: Run some commands
+      - name: Set up git config
         run: |
           pwd
           ls
           cd gh-actions-test-target
           pwd
-          git config --global user.email "andretai.wx@gmail.com"
-          git config --global user.name "Andre Tai"
-          git checkout -b dev
-          touch new_file.txt
-          echo "this is a new file" > new_file.txt
-          git status
-          git add new_file.txt
-          git commit -m "Create new_file.txt"
-          git push --set-upstream origin dev
+      - name: Check if file exists, create if not
+        run: |
+          pwd
 
       # Runs a single command using the runners shell
 #       - name: Run a one-line script
