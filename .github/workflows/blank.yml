@@ -31,6 +31,9 @@ jobs:
       - name: Run some commands
         run: |
           pwd
+          ll -a
+          cd gh-actions-test-target
+          pwd
 
       # Runs a single command using the runners shell
 #       - name: Run a one-line script
