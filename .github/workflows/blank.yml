@@ -23,11 +23,11 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-        with:
-          repository: andretai-sandbox/gh-actions-test-target
-          ref: refs/heads/main
-          token: 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
+#       - uses: actions/checkout@v3
+#         with:
+#           repository: andretai-sandbox/gh-actions-test-target
+#           ref: refs/heads/main
+#           token: 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
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
@@ -36,5 +36,7 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          pwd
+          git clone https://github.com/andretai-sandbox/gh-actions-test-target.git
+          cd gh-actions-test-target
+          cat README.md
