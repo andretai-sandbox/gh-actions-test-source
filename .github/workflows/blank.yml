@@ -43,7 +43,7 @@ jobs:
           git status
           git add new_file.txt
           git commit -m "Create new_file.txt"
-          git push
+          git push --set-upstream origin dev
 
       # Runs a single command using the runners shell
 #       - name: Run a one-line script
