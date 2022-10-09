@@ -38,8 +38,8 @@ jobs:
         run: |
           whoami
           pwd
-          git config --user.email "andretai.wx@gmail.com"
-          git config --user.name "Andre Tai"
+          git config --global user.email "andretai.wx@gmail.com"
+          git config --global user.name "Andre Tai"
           git clone https://github.com/andretai-sandbox/gh-actions-test-target.git
           cd gh-actions-test-target
       - name: Create or update new_file.txt
