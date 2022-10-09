@@ -99,6 +99,6 @@ jobs:
             https://api.github.com/repos/andretai-sandbox/gh-actions-test-target/pulls \
             -d '{"title":"Uncomment some lines","body":"Found some commented lines, uncommenting them!","head":"dev","base":"main"}'\ 
           )
-          PR_NUM=$(python -c "import json; print(json.load($PR)['number'])")
+          PR_NUM=$(python -c "import json; return json.loads($PR)['number'];")
           echo "PR_NUM: $PR_NUM"
           
