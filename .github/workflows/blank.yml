@@ -23,36 +23,39 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-#       - uses: actions/checkout@v3
-#         with:
-#           repository: andretai-sandbox/gh-actions-test-target
-#           ref: refs/heads/main
+      - uses: actions/checkout@v3
+        with:
+          repository: andretai-sandbox/gh-actions-test-target
+          ref: refs/heads/main
 #           token: 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
+      - name: Run some commands
+        run: |
+          pwd
 
       # Runs a single command using the runners shell
 #       - name: Run a one-line script
 #         run: echo Hello, world!
 
       # Runs a set of commands using the runners shell
-      - name: Verify configuration
-        run: |
-          pwd
-          whoami
-          git --version
-          git config --global user.email "andretai.wx@gmail.com"
-          git config --global user.name "Andre Tai"
-          git config -l
-      - name: Clone target repository
-        run: |
-          git clone https://github.com/andretai-sandbox/gh-actions-test-target.git
-      - name: Create or update file
-        run: |
-          cd gh-actions-test-target
-          pwd
-          git remote set-url origin https://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:andretai@github.com/andretai-sandbox/gh-actions-test-target.git
-          touch new_file.txt
-          echo "this is a new file" > new_file.txt
-          git add new_file.txt
-          git commit -m "Create new_file.txt"
-          git push
+#       - name: Verify configuration
+#         run: |
+#           pwd
+#           whoami
+#           git --version
+#           git config --global user.email "andretai.wx@gmail.com"
+#           git config --global user.name "Andre Tai"
+#           git config -l
+#       - name: Clone target repository
+#         run: |
+#           git clone https://github.com/andretai-sandbox/gh-actions-test-target.git
+#       - name: Create or update file
+#         run: |
+#           cd gh-actions-test-target
+#           pwd
+#           git remote set-url origin https://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:andretai@github.com/andretai-sandbox/gh-actions-test-target.git
+#           touch new_file.txt
+#           echo "this is a new file" > new_file.txt
+#           git add new_file.txt
+#           git commit -m "Create new_file.txt"
+#           git push
           
