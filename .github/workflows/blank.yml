@@ -31,7 +31,7 @@ jobs:
         with:
           repository: $ORG/$REPO
           path: './$REPO'
-          token: ${{ PAT }}
+          token: $PAT
       # Set global config such as user's email and name
       - name: Set up git config
         run: |
