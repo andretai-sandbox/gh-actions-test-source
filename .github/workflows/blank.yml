@@ -30,15 +30,21 @@ jobs:
 #           token: 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
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+#       - name: Run a one-line script
+#         run: echo Hello, world!
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Set identity and clone target repository
         run: |
+          whoami
           pwd
+          git config --user.email "andretai.wx@gmail.com"
+          git config --user.name "Andre Tai"
           git clone https://github.com/andretai-sandbox/gh-actions-test-target.git
           cd gh-actions-test-target
+      - name: Create or update new_file.txt
+        run: |
+          pwd
           touch new_file.txt
           echo "this is a new file" > new_file.txt
           git add new_file.txt
