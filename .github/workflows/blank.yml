@@ -89,4 +89,14 @@ jobs:
           pwd
           echo "current branch: $(git branch --show-current)"
           git push
+      - name: Create pull request
+        env: 
+          PAT: ${{ secrets.PAT }}
+        run: |
+          curl \
+            -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $PAT" \
+            https://api.github.com/repos/andretai-sandbox/gh-actions-test-target/pulls \
+            -d '{"title":"Uncomment some lines","body":"Found some commented lines, uncommenting them!","head":"dev","base":"main"}'
           
