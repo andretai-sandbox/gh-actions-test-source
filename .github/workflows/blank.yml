@@ -28,7 +28,7 @@ jobs:
           repository: andretai-sandbox/gh-actions-test-target
 #           ref: refs/heads/main
           path: './gh-actions-test-target'
-          token: secrets.PAT
+          token: ${{ secrets.PAT }}
       - name: Run some commands
         run: |
           pwd
