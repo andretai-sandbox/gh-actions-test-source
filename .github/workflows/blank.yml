@@ -1,5 +1,3 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
 # Controls when the workflow will run
@@ -10,6 +8,14 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+
+env:
+  ORG: andretai-sandbox
+  PAT: ${{ secrets.PAT }}
+  REPO: gh-actions-test-target
+  DEFAULT: main
+  BRANCH: dev
+  FILE: test_file.txt
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -23,34 +29,32 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
         with:
-          repository: andretai-sandbox/gh-actions-test-target
-          path: './gh-actions-test-target'
-          token: ${{ secrets.PAT }}
+          repository: ${{ ORG }}/${{ REPO }}
+          path: './$REPO'
+          token: ${{ PAT }}
+      # Set global config such as user's email and name
       - name: Set up git config
         run: |
           git config --global user.email "andretai.wx@gmail.com"
           git config --global user.name "Andre Tai"
           git config -l
-      - name: Check-out 'dev' branch if exists, else create it
+      # Fetch all remote branches, checkout to target branch if it exists, and create it if not
+      - name: Check-out '$BRANCH' branch if exists, else create it
         run: |
-          cd gh-actions-test-target
-          echo "current branch: $(git branch --show-current)"
+          cd $REPO
           git fetch --all
           REMOTE=$(git branch -r)
-          echo $REMOTE
-          if [[ $REMOTE == *"dev"* ]]; then
-            echo "'dev' branch exists on remote"
-            git checkout dev;
+          if [[ $REMOTE == *"$BRANCH"* ]]; then
+            echo "'$BRANCH' branch exists on remote"
+            git checkout $BRANCH;
           else
-            echo "'dev' branch doesn't exist on remote"
-            git checkout -b dev;
+            echo "'$BRANCH' branch doesn't exist on remote"
+            git checkout -b $BRANCH;
           fi
+      # Create target file if it doesn't exist and push to target branch
       - name: Check if file exists, create if not
         run: |
-          cd gh-actions-test-target
-          pwd
-          echo "current branch: $(git branch --show-current)"
-          FILE=test_file.txt
+          cd $REPO
           if test -f "$FILE"; then
             echo "$FILE exists";
           else
@@ -63,14 +67,12 @@ jobs:
             echo "$FILE created";
             git add $FILE;
             git commit -m "Create $FILE";
-            git push --set-upstream origin dev;
+            git push --set-upstream origin $BRANCH;
           fi
+      # Change target file (e.g. commenting or uncommenting lines) and push to target branch
       - name: Comment/uncomment lines
         run: |
-          cd gh-actions-test-target
-          pwd
-          echo "current branch: $(git branch --show-current)"
-          FILE=test_file.txt
+          cd $REPO
           IDX=1
           while read -r line; do 
             if [[ $line =~ ^#.* ]]; then
@@ -85,19 +87,18 @@ jobs:
           else
             git add $FILE;
             git commit -m "Update $FILE";
-            git push --set-upstream origin dev;
+            git push --set-upstream origin $BRANCH;
           fi
+      # After commits were pushed, create pull request and merge it
       - name: Create and merge pull request
-        env: 
-          PAT: ${{ secrets.PAT }}
         run: |
           PR=$(\
             curl \
             -X POST \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $PAT" \
-            https://api.github.com/repos/andretai-sandbox/gh-actions-test-target/pulls \
-            -d '{"title":"Uncomment some lines","body":"Found some commented lines, uncommenting them!","head":"dev","base":"main"}'\
+            https://api.github.com/repos/$ORG/$REPO/pulls \
+            -d '{"title":"Uncomment some lines","body":"Found some commented lines, uncommenting them!","head":"$BRANCH","base":"$DEFAULT"}'\
             | tac | tac | python -c 'import sys, json; print(json.load(sys.stdin)["number"])'
           )
           echo "PR NUMBER: $PR"
@@ -106,7 +107,7 @@ jobs:
             -X PUT \
             -H "Accept: application/vnd.github+json" \
             -H "Authorization: Bearer $PAT" \
-            https://api.github.com/repos/andretai-sandbox/gh-actions-test-target/pulls/$PR/merge\
+            https://api.github.com/repos/$ORG/$REPO/pulls/$PR/merge\
             | tac | tac | python -c 'import sys, json; print(json.load(sys.stdin)["message"])'
           )
           echo "RESULT: $MERGED"
