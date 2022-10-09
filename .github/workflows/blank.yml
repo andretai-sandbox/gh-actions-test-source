@@ -50,7 +50,6 @@ jobs:
           cd gh-actions-test-target
           pwd
           echo "current branch: $(git branch --show-current)"
-          ls
           FILE=test_file.txt
           if test -f "$FILE"; then
             echo "$FILE exists";
@@ -64,13 +63,13 @@ jobs:
             echo "$FILE created";
             git add $FILE;
             git commit -m "Create $FILE";
+            git push --set-upstream origin dev;
           fi
       - name: Comment/uncomment lines
         run: |
           cd gh-actions-test-target
           pwd
           echo "current branch: $(git branch --show-current)"
-          FILE=test_file.txt
           IDX=1
           while read -r line; do 
             if [[ $line =~ ^#.* ]]; then
@@ -79,14 +78,13 @@ jobs:
             fi;
             echo "$(( IDX++ ))";
           done < $FILE
-          git add $FILE
-          git commit -m "Update $FILE"
-      - name: Push changes (if any)
-        run: |
-          cd gh-actions-test-target
-          pwd
-          echo "current branch: $(git branch --show-current)"
-          git push --set-upstream origin dev
+          $CHANGES=$(git status --porcelain)
+          if [ -z "${$CHANGES}" ]; then
+            echo "No changes to be commited";
+          else
+            git add $FILE
+            git commit -m "Update $FILE"
+            git push --set-upstream origin dev
       - name: Create pull request
         env: 
           PAT: ${{ secrets.PAT }}
