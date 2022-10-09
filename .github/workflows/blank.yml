@@ -38,6 +38,7 @@ jobs:
           cd gh-actions-test-target
           echo "current branch: $(git branch --show-current)"
           REMOTE=$(git branch -r)
+          echo $REMOTE
           if [[ $REMOTE == *"dev"* ]]; then
             echo "'dev' branch exists on remote"
             git checkout dev;
@@ -82,4 +83,8 @@ jobs:
           git add $FILE
           git commit -m "Update $FILE"
       - name: Push changes (if any)
-        run: git push --set-upstream origin dev
+        run: |
+          cd gh-actions-test-target
+          pwd
+          echo "current branch: $(git branch --show-current)"
+          
