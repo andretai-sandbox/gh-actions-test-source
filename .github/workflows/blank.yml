@@ -57,6 +57,7 @@ jobs:
           cd ${{ env.REPO }}
           if test -f "${{ env.FILE }}"; then
             echo "${{ env.FILE }} exists";
+            PR_REQUIRED=False >> $GITHUB_ENV;
           else
             touch ${{ env.FILE }};
             echo "# this is a test file" > ${{ env.FILE }};
@@ -68,7 +69,9 @@ jobs:
             git add ${{ env.FILE }};
             git commit -m "Create $FILE";
             git push --set-upstream origin ${{ env.BRANCH }};
+            PR_REQUIRED=True >> $GITHUB_ENV;
           fi
+          echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
       # Change target file (e.g. commenting or uncommenting lines) and push to target branch
       - name: Comment/uncomment lines
         run: |
@@ -88,9 +91,12 @@ jobs:
             git add ${{ env.FILE }};
             git commit -m "Update ${{ env.FILE }}";
             git push --set-upstream origin ${{ env.BRANCH }};
+            PR_REQUIRED=True >> $GITHUB_ENV;
           fi
+          echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
       # After commits were pushed, create pull request and merge it
       - name: Create and merge pull request
+        if: ${{ env.PR_REQUIRED }} == "True"
         run: |
           PR=$(\
             curl \
