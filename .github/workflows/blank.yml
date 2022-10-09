@@ -59,6 +59,7 @@ jobs:
           cd gh-actions-test-target
           pwd
           git checkout dev
+          git pull
           FILE=test_file.txt
           IDX=1
           while read -r line; do 
