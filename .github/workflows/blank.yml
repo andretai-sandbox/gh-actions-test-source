@@ -72,7 +72,7 @@ jobs:
             echo "PR_REQUIRED=True" >> $GITHUB_ENV;
           fi
       # Change target file (e.g. commenting or uncommenting lines) and push to target branch
-      - name: Comment/uncomment lines
+      - name: Modify target file as needed
         run: |
           cd ${{ env.REPO }}
           IDX=1
@@ -92,12 +92,13 @@ jobs:
             git push --set-upstream origin ${{ env.BRANCH }};
             echo "PR_REQUIRED=True" >> $GITHUB_ENV;
           fi
+      - name: Check if PR is required
+        run: |
           echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
       # After commits were pushed, create pull request and merge it
       - name: Create and merge pull request
         if: env.PR_REQUIRED == 'True'
         run: |
-          echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
           PR=$(\
             curl \
             -X POST \
