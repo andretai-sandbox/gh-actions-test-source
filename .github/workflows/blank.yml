@@ -43,7 +43,11 @@ jobs:
             echo "$FILE exists";
           else
             touch $FILE;
-            echo "this is a test file" > $FILE;
+            echo "# this is a test file" > $FILE;
+            echo "	this is line number 2" >> $FILE;
+            echo "line number 3 is this line" >> $FILE;
+            echo "	# how many lines do we have?" >> $FILE;
+            echo "" >> $FILE;
             echo "$FILE created";
             git add $FILE;
             git commit -m "Create $FILE";
@@ -55,9 +59,15 @@ jobs:
           pwd
           git checkout dev
           FILE=test_file.txt
-          while read line; do
-            if [[ $line =~ "#" ]]; then
+          IDX=1
+          while read -r line; do 
+            if [[ $line =~ ^#.* ]]; then
               echo $line;
+              sed -i "$(( IDX ))s/#/ /" $FILE;
             fi;
+            echo "$(( IDX++ ))";
           done < $FILE
+          git add $FILE
+          git commit -m "Update $FILE"
+          git push --set-upstream origin dev
           
