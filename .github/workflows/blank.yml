@@ -35,6 +35,11 @@ jobs:
           ls
           cd gh-actions-test-target
           pwd
+          touch new_file.txt
+          echo "this is a new file" > new_file.txt
+          git add new_file.txt
+          git commit -m "Create new_file.txt"
+          git push
 
       # Runs a single command using the runners shell
 #       - name: Run a one-line script
