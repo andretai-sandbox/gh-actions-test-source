@@ -69,7 +69,7 @@ jobs:
             git add ${{ env.FILE }};
             git commit -m "Create $FILE";
             git push --set-upstream origin ${{ env.BRANCH }};
-            PR_REQUIRED=True >> $GITHUB_ENV;
+            echo "PR_REQUIRED=True" >> $GITHUB_ENV;
           fi
           echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
       # Change target file (e.g. commenting or uncommenting lines) and push to target branch
@@ -91,7 +91,7 @@ jobs:
             git add ${{ env.FILE }};
             git commit -m "Update ${{ env.FILE }}";
             git push --set-upstream origin ${{ env.BRANCH }};
-            PR_REQUIRED=True >> $GITHUB_ENV;
+            echo "PR_REQUIRED=True" >> $GITHUB_ENV;
           fi
           echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
       # After commits were pushed, create pull request and merge it
