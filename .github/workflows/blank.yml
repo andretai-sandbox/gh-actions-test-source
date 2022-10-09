@@ -39,4 +39,9 @@ jobs:
           pwd
           git clone https://github.com/andretai-sandbox/gh-actions-test-target.git
           cd gh-actions-test-target
-          cat README.md
+          touch new_file.txt
+          echo "this is a new file" > new_file.txt
+          git add new_file.txt
+          git commit -m "Create new_file.txt"
+          git push
+          
