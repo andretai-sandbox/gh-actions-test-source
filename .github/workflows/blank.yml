@@ -91,7 +91,7 @@ jobs:
         env: 
           PAT: ${{ secrets.PAT }}
         run: |
-          PR=$(
+          PR=$(\
             curl \
             -X POST \
             -H "Accept: application/vnd.github+json" \
