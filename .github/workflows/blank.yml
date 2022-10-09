@@ -37,7 +37,6 @@ jobs:
           pwd
           git config --global user.email "andretai.wx@gmail.com"
           git config --global user.name "Andre Tai"
-          git config --global github.token $GITHUB_TOKEN
           touch new_file.txt
           echo "this is a new file" > new_file.txt
           git add new_file.txt
