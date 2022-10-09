@@ -37,6 +37,8 @@ jobs:
           pwd
           git config --global user.email "andretai.wx@gmail.com"
           git config --global user.name "Andre Tai"
+          git remote set-url origin https://andretai:${{ secrets.GITHUB_TOKEN }}@github.com/andretai-sandbox/gh-actions-test-target.git
+          git config -l
           touch new_file.txt
           echo "this is a new file" > new_file.txt
           git add new_file.txt
