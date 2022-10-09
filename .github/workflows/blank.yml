@@ -37,6 +37,7 @@ jobs:
         run: |
           cd gh-actions-test-target
           echo "current branch: $(git branch --show-current)"
+          git fetch --all
           REMOTE=$(git branch -r)
           echo $REMOTE
           if [[ $REMOTE == *"dev"* ]]; then
