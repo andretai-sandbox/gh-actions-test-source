@@ -88,4 +88,5 @@ jobs:
           cd gh-actions-test-target
           pwd
           echo "current branch: $(git branch --show-current)"
+          git push
           
