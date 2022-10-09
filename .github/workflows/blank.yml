@@ -37,8 +37,8 @@ jobs:
         run: |
           cd gh-actions-test-target
           pwd
-          git pull
           git checkout -b dev
+          ls
           FILE=test_file.txt
           if test -f "$FILE"; then
             echo "$FILE exists";
@@ -59,7 +59,6 @@ jobs:
           cd gh-actions-test-target
           pwd
           git checkout dev
-          git pull origin dev
           FILE=test_file.txt
           IDX=1
           while read -r line; do 
