@@ -71,7 +71,6 @@ jobs:
             git push --set-upstream origin ${{ env.BRANCH }};
             echo "PR_REQUIRED=True" >> $GITHUB_ENV;
           fi
-          echo "PR_REQUIRED: ${{ env.PR_REQUIRED }}"
       # Change target file (e.g. commenting or uncommenting lines) and push to target branch
       - name: Comment/uncomment lines
         run: |
