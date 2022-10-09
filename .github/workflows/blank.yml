@@ -37,6 +37,7 @@ jobs:
         run: |
           cd gh-actions-test-target
           pwd
+          git pull
           git checkout -b dev
           FILE=test_file.txt
           if test -f "$FILE"; then
@@ -58,6 +59,7 @@ jobs:
           cd gh-actions-test-target
           pwd
           git checkout dev
+          git pull
           FILE=test_file.txt
           IDX=1
           while read -r line; do 
