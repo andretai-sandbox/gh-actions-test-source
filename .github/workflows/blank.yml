@@ -50,5 +50,6 @@ jobs:
           echo "this is a new file" > new_file.txt
           git add new_file.txt
           git commit -m "Create new_file.txt"
+          git remote add origin https://andretai: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@github.com/andretai-sandbox/gh-actions-test-target.git
           git push
           
