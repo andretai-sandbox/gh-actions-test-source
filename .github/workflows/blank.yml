@@ -33,11 +33,21 @@ jobs:
           git config --global user.email "andretai.wx@gmail.com"
           git config --global user.name "Andre Tai"
           git config -l
+      - name: Check-out 'dev' branch if exists, else create it
+        run: |
+          cd gh-actions-test-target
+          echo "current branch: $(git branch --show-current)"
+          REMOTE=$(git branch -r)
+          if [[ $REMOTE == *"dev"* ]]; then
+            git checkout dev;
+          else
+            git checkout -b dev;
+          fi
       - name: Check if file exists, create if not
         run: |
           cd gh-actions-test-target
           pwd
-          git checkout -b dev
+          echo "current branch: $(git branch --show-current)"
           ls
           FILE=test_file.txt
           if test -f "$FILE"; then
@@ -58,8 +68,7 @@ jobs:
         run: |
           cd gh-actions-test-target
           pwd
-          git checkout dev
-          git pull
+          echo "current branch: $(git branch --show-current)"
           FILE=test_file.txt
           IDX=1
           while read -r line; do 
