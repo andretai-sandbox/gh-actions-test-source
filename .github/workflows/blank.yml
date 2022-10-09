@@ -31,7 +31,7 @@ jobs:
       - name: Run some commands
         run: |
           pwd
-          ll -a
+          ls
           cd gh-actions-test-target
           pwd
 
