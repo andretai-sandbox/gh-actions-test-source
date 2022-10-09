@@ -87,7 +87,7 @@ jobs:
             git commit -m "Update $FILE";
             git push --set-upstream origin dev;
           fi
-      - name: Create pull request
+      - name: Create and merge pull request
         env: 
           PAT: ${{ secrets.PAT }}
         run: |
@@ -101,4 +101,11 @@ jobs:
             | tac | tac | python -c 'import sys, json; print(json.load(sys.stdin)["number"])'
           )
           echo "PR_NUM: $PR"
-          
+          MERGED=$(
+            curl \
+            -X PUT \
+            -H "Accept: application/json" \
+            -H "Authorization: Bearer $PAT" \
+            https://api.github.com/repos/andretai-sandbox/gh-actions-test-target/pulls/$PR/merge\
+            | tac | tac | python -c 'import sys, json; print(json.load(sys.stdin)["message"])'
+          )
